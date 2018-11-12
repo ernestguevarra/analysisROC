@@ -1,0 +1,47 @@
+---
+title: Notes on sample sizes required for Receiver Operator Characteristic (ROC) curves
+author: ""
+date: '`r format(Sys.Date(), "%d %B %Y")`'
+fontsize: 12pt
+geometry: margin=2cm
+documentclass: article
+classoption: a4paper
+bibliography: bibliography.bib
+lot: FALSE
+lof: FALSE
+link-citations: TRUE
+links-as-notes: FALSE
+colorlinks: TRUE
+linkcolor: blue
+citecolor: blue
+urlcolor: blue
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Area under the curve of ROC
+
+$$ W = \frac{1}{n_A ~ \times ~ n_N} \sum_1^{n_A}\sum_1^{n_N} S(x_A,x_N) $$
+
+
+# Standard error of the area under the curve of ROC
+
+$$ \begin{aligned}
+SE(W) ~ & = ~ \sqrt{\frac{\theta(1 ~ - ~ \theta) ~ + ~ (n_A ~ - ~ 1)(Q_1 ~ - ~ \theta^2) ~ + ~ (n_N ~ - ~ 1)(Q_2 ~ - ~ \theta^2)}{n_A n_N}} \\ 
+\\
+where & \\
+\\
+\theta ~ & = ~ \text{area under the curve} \\
+\\
+n_A ~ & = ~ \text{number of cases} \\
+\\
+n_N ~ & = ~ \text{number of non-caes} \\
+\\
+Q_1 ~ & = ~ \frac{\theta}{2 ~ - ~ \theta} \\
+\\
+Q_2 ~ & = ~ \frac{2A^2}{1 ~ + ~ A}
+\end{aligned} $$
+
+

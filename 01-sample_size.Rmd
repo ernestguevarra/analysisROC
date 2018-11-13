@@ -21,31 +21,89 @@ urlcolor: blue
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Area under the curve of ROC
+# Calculating sample size needed to estimate area under an ROC curve given a specified CI and power
 
-$$ W ~ = ~ \frac{1}{n_A ~ \times ~ n_N} \sum_1 ^ {n_A}\sum_1 ^ {n_N} S(\chi_A,\chi_N) $$
+## Calculating ratio of number of non-cases to cases
 
-
-# Standard error of the area under the curve of ROC
+We first need to calculate $k$ which is the ratio of number of non-cases to cases. This can be calculated as follows:
 
 $$ \begin{aligned}
-SE(W) ~ & = ~ \sqrt{\frac{\theta(1 ~ - ~ \theta) ~ + ~ (n_A ~ - ~ 1)(Q_1 ~ - ~ \theta ^ 2) ~ + ~ (n_N ~ - ~ 1)(Q_2 ~ - ~ \theta ^ 2)}{n_A ~ \times ~ n_N}} \\ 
+k ~ & = ~ \frac{1 ~ - ~ PREV_p}{PREV_p} \\
 \\
-where & \\
+where: & \\
 \\
-\theta ~ & = ~ \text{area under the curve} \\
-\\
-n_A ~ & = ~ \text{number of cases} \\
-\\
-n_N ~ & = ~ \text{number of non-cases} \\
-\\
-Q_1 ~ & = ~ \frac{\theta}{2 ~ - ~ \theta} \\
-\\
-Q_2 ~ & = ~ \frac{2\theta^2}{1 ~ + ~ \theta}
+PREV_p ~ & = ~ \text{prevalence of the cases in the population}
 \end{aligned} $$
 
+Given that we don't have specific values for the prevalence of children demonstrating appropriate infant and young child feeding, we make an educated guess of what this prevalence can be. It is likely that the practice of appropriate infand and young child feeding is low and is probably at best at the 20% level.
 
-# Sample size given a specified confidence interval
+Using this, we estimate $k$ as follows:
+
+$$ \begin{aligned} 
+k ~ & = ~ \frac{1 ~ - ~ PREV_p}{PREV_p} \\
+\\
+& = ~ \frac{1 ~ - ~ 0.2}{0.2} \\
+\\
+& = ~ 4
+\end{aligned} $$
+
+## Calculating the binomial distribution parameter
+
+We then need to calculate the binomial distribution parameter $A$ as follows:
+
+$$ \begin{aligned}
+A ~ & = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414 \\
+\\
+where: & \\
+\\
+\phi ^ {-1} ~ & = ~ \text{inverse of the cumulative normal disribution function} \\
+\\
+AUC ~ & = ~ \text{expected area under the curve}
+\end{aligned} $$
+
+Since we do not have prior knowledge of the AUC from previous studies, we set AUC at 0.80 which is the AUC value we would assume that would show agreement between ICFI and indicators for nutrition and energy adequacy. This gives us the following $A$ parameter:
+
+$$ \begin{aligned}
+A ~ & = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414 \\
+\\
+& = ~ \phi ^ {-1}(0.80) ~ \times ~ 1.414 \\
+\\
+& = ~ 0.25 ~ \times ~ 1.414 \\
+\\
+& = ~ 1.190052
+\end{aligned} $$
+
+## Calculating the variance functiion
+
+To be able to continue with the calculations, we will need to calculate variance function ($VF$). The variance function ($VF$) is calculated as follows:
+
+$$ \begin{aligned}
+VF ~ & = ~ 0.0099 ~ \times ~ e ^ {-A ~ \times ~ A/2} ~ \times ~ \Bigg [ ~ (5 ~ \times ~ A ^ 2 ~ + ~ 8) ~ + ~ \frac{(A ^ 2 ~ + ~ 8)}{k} ~ \Bigg ] \\
+\\
+where: & \\
+\\
+A ~ & = ~ 1.190052 \\
+\\
+k ~ & = ~ 4
+\end{aligned}$$
+
+Using the values calculated for $A$ and $k$ previously, we calculate $VF$ as follows:
+
+$$ \begin{aligned}
+VF ~ & = ~ 0.0099 ~ \times ~ e ^ {-A ~ \times ~ A/2} ~ \times ~ \Bigg [ ~ (5 ~ \times ~ A ^ 2 ~ + ~ 8) ~ + ~ \frac{(A ^ 2 ~ + ~ 8)}{k} ~ \Bigg ] \\
+\\
+& = ~ 0.0099 ~ \times ~ 0.4925731 ~ \times ~ \Bigg [ ~ (5 ~ \times ~ 1.416225 ~ + ~ 8) ~ + ~ \frac{(1.416225 ~ + ~ 8)}{4} ~ \Bigg ] \\
+\\
+& = ~ 0.004876474 ~ \times ~ [ ~ 15.08112 ~ + ~ 2.354056 ~] \\
+\\
+& = ~ 0.004876474 ~ \times 17.43518 \\
+\\
+& = ~ 0.0850222
+\end{aligned} $$
+
+## Calculating number of cases needed in the study sample
+
+Now we can calculate the number of cases (i.e. those who have the condition of interest). For the case of ICFI or IYCF, this will be those children who exhibit or demonstrate appropriate infant and young child feeding. This can be calculated as follows:
 
 $$ \begin{aligned}
 N ~ & = ~ \frac{Z_{\alpha/2} ^ 2 ~ \times ~ VF}{L ^ 2} \\
@@ -56,40 +114,42 @@ Z_{\frac{\alpha}{2}} ~ & = ~ 1.96 ~ \text{for a 95\% CI} \\
 \\
 L ~ & = 0.05 ~ \text{(desired half-width of the CI)} \\
 \\
-VF ~ & = ~ \text{variance function}  \\
-\\
-N ~ & = ~ \text{number of cases}
+VF ~ & = ~ 0.0850222  \\
 \end{aligned} $$
 
-The variance function ($VF$) is calculated as follows:
+Using the value for $VF$ calculated previously, we calculate $N$ as follows:
 
 $$ \begin{aligned}
-VF ~ & = ~ 0.0099 ~ \times ~ e ^ {-A ~ \times ~ A/2} ~ \times ~ \Bigg [ ~ (5 ~ \times ~ A ^ 2 ~ + ~ 8) ~ + ~ \frac{(A ^ 2 ~ + ~ 8)}{k} ~ \Bigg ] \\
+N ~ & = ~ \frac{Z_{\alpha/2} ^ 2 ~ \times ~ VF}{L ^ 2} \\
+\\
+& = ~ \frac{1.96 ^ 2 ~ \times ~ 0.0850222}{0.05^ 2} \\
+\\
+& = ~ 130.6485 ~ \approx ~ 131
+\end{aligned} $$
+
+## Total sample size
+
+The total sample size $n$ needed for the ROC analysis can then be calculated as follows:
+
+$$ \begin{aligned}
+n ~ & = ~ N ~ \times ~ (1 ~ + ~ k)\\
 \\
 where: & \\
 \\
-A ~ & = ~ \text{parameter from the binomial distribution} \\
-& = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414
-\end{aligned}$$
+N ~ & = ~ 131 \\
+\\
+k ~ & = ~ 4
+\end{aligned} $$
 
-
-# Sample size for detecting differences between areas under two ROC curves
+Using the $N$ and $k$ values calculated earlier, $n$ is calculated as follows:
 
 $$ \begin{aligned}
-n ~ & = ~ \Bigg [ ~ \frac{Z_\alpha \sqrt{2 V_1} ~ + ~ Z_\beta \sqrt{V_1 ~ + ~ V_2}}{\delta} ~ \Bigg] ^ 2 \\
+n ~ & = ~ N ~ \times ~ (1 ~ + ~ k)\\
 \\
-where & \\
+& = ~ 131 ~ \times ~ 5 \\
 \\
-Z_\alpha ~ & = ~ 1.645 ~ \text{for a 5\% one-sided test of significance} \\
-\\
-Z_\beta ~ & = ~ 0.84, 1.28, ~ \text{or} ~ 1.645 ~ \text{for 80\%, 90\%, or 95\% power} \\
-\\
-\delta ~ & = ~ \theta_2 ~ - ~ \theta_1 \\
-\\
-V_1 ~ & = ~ Q_1 ~ + ~ Q_2 ~ - ~ 2\theta_1 ^ 2 ~ \text{where} ~ Q_1 ~ = ~ \frac{\theta_1}{2 ~ - ~ \theta_1} ~ \text{and} ~ Q_2 ~ = ~ \frac{2\theta_1^2}{1 ~ + ~ \theta_1} \\
-\\
-V_2 ~ & = ~ Q_1 ~ + ~ Q_2 ~ - ~ 2\theta_2 ^ 2 ~ \text{where} ~ Q_1 ~ = ~ \frac{\theta_2}{2 ~ - ~ \theta_2} ~ \text{and} ~ Q_2 ~ = ~ \frac{2\theta_2^2}{1 ~ + ~ \theta_2}
+& = ~ 655
 \end{aligned} $$
 
 
-
+We will need a sample size of about **655** children about **131** of which will be children who are practising appropriate infant and young child feeding.

@@ -23,13 +23,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Area under the curve of ROC
 
-$$ W = \frac{1}{n_A ~ \times ~ n_N} \sum_1^{n_A}\sum_1^{n_N} S(x_A,x_N) $$
+$$ W ~ = ~ \frac{1}{n_A ~ \times ~ n_N} \sum_1 ^ {n_A}\sum_1 ^ {n_N} S(\chi_A,\chi_N) $$
 
 
 # Standard error of the area under the curve of ROC
 
 $$ \begin{aligned}
-SE(W) ~ & = ~ \sqrt{\frac{\theta(1 ~ - ~ \theta) ~ + ~ (n_A ~ - ~ 1)(Q_1 ~ - ~ \theta^2) ~ + ~ (n_N ~ - ~ 1)(Q_2 ~ - ~ \theta^2)}{n_A n_N}} \\ 
+SE(W) ~ & = ~ \sqrt{\frac{\theta(1 ~ - ~ \theta) ~ + ~ (n_A ~ - ~ 1)(Q_1 ~ - ~ \theta ^ 2) ~ + ~ (n_N ~ - ~ 1)(Q_2 ~ - ~ \theta ^ 2)}{n_A ~ \times ~ n_N}} \\ 
 \\
 where & \\
 \\
@@ -37,11 +37,59 @@ where & \\
 \\
 n_A ~ & = ~ \text{number of cases} \\
 \\
-n_N ~ & = ~ \text{number of non-caes} \\
+n_N ~ & = ~ \text{number of non-cases} \\
 \\
 Q_1 ~ & = ~ \frac{\theta}{2 ~ - ~ \theta} \\
 \\
-Q_2 ~ & = ~ \frac{2A^2}{1 ~ + ~ A}
+Q_2 ~ & = ~ \frac{2\theta^2}{1 ~ + ~ \theta}
 \end{aligned} $$
+
+
+# Sample size given a specified confidence interval
+
+$$ \begin{aligned}
+N ~ & = ~ \frac{Z_{\alpha/2} ^ 2 ~ \times ~ VF}{L ^ 2} \\
+\\
+where: & \\
+\\
+Z_{\frac{\alpha}{2}} ~ & = ~ 1.96 ~ \text{for a 95\% CI} \\
+\\
+L ~ & = 0.05 ~ \text{(desired half-width of the CI)} \\
+\\
+VF ~ & = ~ \text{variance function}  \\
+\\
+N ~ & = ~ \text{number of cases}
+\end{aligned} $$
+
+The variance function ($VF$) is calculated as follows:
+
+$$ \begin{aligned}
+VF ~ & = ~ 0.0099 ~ \times ~ e ^ {-A ~ \times ~ A/2} ~ \times ~ \Bigg [ ~ (5 ~ \times ~ A ^ 2 ~ + ~ 8) ~ + ~ \frac{(A ^ 2 ~ + ~ 8)}{k} ~ \Bigg ] \\
+\\
+where: & \\
+\\
+A ~ & = ~ \text{parameter from the binomial distribution} \\
+& = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414
+\end{aligned}$$
+
+
+# Sample size for detecting differences between areas under two ROC curves
+
+$$ \begin{aligned}
+n ~ & = ~ \Bigg [ ~ \frac{Z_\alpha \sqrt{2 V_1} ~ + ~ Z_\beta \sqrt{V_1 ~ + ~ V_2}}{\delta} ~ \Bigg] ^ 2 \\
+\\
+where & \\
+\\
+Z_\alpha ~ & = ~ 1.645 ~ \text{for a 5\% one-sided test of significance} \\
+\\
+Z_\beta ~ & = ~ 0.84, 1.28, ~ \text{or} ~ 1.645 ~ \text{for 80\%, 90\%, or 95\% power} \\
+\\
+\delta ~ & = ~ \theta_2 ~ - ~ \theta_1 \\
+\\
+V_1 ~ & = ~ Q_1 ~ + ~ Q_2 ~ - ~ 2\theta_1 ^ 2 ~ \text{where} ~ Q_1 ~ = ~ \frac{\theta_1}{2 ~ - ~ \theta_1} ~ \text{and} ~ Q_2 ~ = ~ \frac{2\theta_1^2}{1 ~ + ~ \theta_1} \\
+\\
+V_2 ~ & = ~ Q_1 ~ + ~ Q_2 ~ - ~ 2\theta_2 ^ 2 ~ \text{where} ~ Q_1 ~ = ~ \frac{\theta_2}{2 ~ - ~ \theta_2} ~ \text{and} ~ Q_2 ~ = ~ \frac{2\theta_2^2}{1 ~ + ~ \theta_2}
+\end{aligned} $$
+
 
 

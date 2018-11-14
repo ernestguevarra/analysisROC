@@ -35,7 +35,7 @@ where: & \\
 PREV_p ~ & = ~ \text{prevalence of the cases in the population}
 \end{aligned} $$
 
-Given that we don't have specific values for the prevalence of children demonstrating appropriate infant and young child feeding, we make an educated guess of what this prevalence can be. It is likely that the practice of appropriate infand and young child feeding is low and is probably at best at the 20% level.
+Given that we don't have specific values for the prevalence of children demonstrating appropriate infant and young child feeding, we make an educated guess of what this prevalence can be. It is likely that the practice of appropriate infant and young child feeding is low and is probably at best at the 20% level.
 
 Using this, we estimate $k$ as follows:
 
@@ -47,9 +47,9 @@ k ~ & = ~ \frac{1 ~ - ~ PREV_p}{PREV_p} \\
 & = ~ 4
 \end{aligned} $$
 
-## Calculating the binomial distribution parameter
+## Calculating the binormal distribution parameter
 
-We then need to calculate the binomial distribution parameter $A$ as follows:
+We then need to calculate the binormal distribution parameter $A$ as follows:
 
 $$ \begin{aligned}
 A ~ & = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414 \\
@@ -73,7 +73,7 @@ A ~ & = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414 \\
 & = ~ 1.190052
 \end{aligned} $$
 
-## Calculating the variance functiion
+## Calculating the variance function
 
 To be able to continue with the calculations, we will need to calculate variance function ($VF$). The variance function ($VF$) is calculated as follows:
 

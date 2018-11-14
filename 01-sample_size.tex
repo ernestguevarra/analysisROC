@@ -215,10 +215,14 @@
 \begin{document}
 \maketitle
 
-\hypertarget{calculating-sample-size-needed-to-estimate-area-under-an-roc-curve-given-a-specified-ci-and-power}{%
+\hypertarget{calculating-sample-size-needed-to-estimate-area-under-an-roc-curve-given-a-specified-ci-and-confidence-interval}{%
 \section{Calculating sample size needed to estimate area under an ROC
-curve given a specified CI and
-power}\label{calculating-sample-size-needed-to-estimate-area-under-an-roc-curve-given-a-specified-ci-and-power}}
+curve given a specified CI and confidence
+interval}\label{calculating-sample-size-needed-to-estimate-area-under-an-roc-curve-given-a-specified-ci-and-confidence-interval}}
+
+Following are the steps to calculating sample size needed to estimate
+area under an ROC curve given a specified CI and confidence interval.
+These steps are based on \citet{Obuchowski1118}, \citet{Obuchowski2005}.
 
 \hypertarget{calculating-ratio-of-number-of-non-cases-to-cases}{%
 \subsection{Calculating ratio of number of non-cases to
@@ -239,7 +243,11 @@ Given that we don't have specific values for the prevalence of children
 demonstrating appropriate infant and young child feeding, we make an
 educated guess of what this prevalence can be. It is likely that the
 practice of appropriate infant and young child feeding is low and is
-probably at best at the 20\% level.
+probably at best at the 20\% level. Demographic and Health Survey (DHS)
+for Burkina Faso in 2010 show that for the whole country in total,
+minimum acceptable diet (MAD) was at 3.1\% and about 2.4\% for rural
+areas. In 2016, SMART surveys conducted in parts of Burkina Faso have
+shown in increase in this indicator to about 20\%.
 
 Using this, we estimate \(k\) as follows:
 
@@ -255,8 +263,18 @@ k ~ & = ~ \frac{1 ~ - ~ PREV_p}{PREV_p} \\
 \subsection{Calculating the binormal distribution
 parameter}\label{calculating-the-binormal-distribution-parameter}}
 
-We then need to calculate the binormal distribution parameter \(A\) as
-follows:
+We then need to calculate the binormal distribution parameter \(A\).
+\(A\) is one of two (the other being \(B\)) parameters that describe the
+ROC curve. However, these parameters are rarely empirically estimated as
+they represent unobserved binormal variables. However, for sample size
+calculations, parameter \(A\) can be estimated based on an expected area
+under the curve (AUC) of the ROC curve. The AUC corresponds to the
+expected level of agreement or accuracy of the metric being tested with
+the actual status or condition observed.
+
+For our purposes, the AUC will be for how much agreement or accuracy
+there is for MAD and/or good ICFI to predict mean nutrient and mean
+energy adequacy. \# Given AUC, \(A\) can be calculated as follows:
 
 \[ \begin{aligned}
 A ~ & = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414 \\
@@ -269,18 +287,18 @@ AUC ~ & = ~ \text{expected area under the curve}
 \end{aligned} \]
 
 Since we do not have prior knowledge of the AUC from previous studies,
-we set AUC at 0.80 which is the AUC value we would assume that would
-show agreement between ICFI and indicators for nutrition and energy
+we set AUC at 0.90 which is the AUC value we would assume that would
+show best agreement between ICFI and indicators for nutrition and energy
 adequacy. This gives us the following \(A\) parameter:
 
 \[ \begin{aligned}
 A ~ & = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414 \\
 \\
-& = ~ \phi ^ {-1}(0.80) ~ \times ~ 1.414 \\
+& = ~ \phi ^ {-1}(0.90) ~ \times ~ 1.414 \\
 \\
-& = ~ 0.25 ~ \times ~ 1.414 \\
+& = ~ 1.281552 ~ \times ~ 1.414 \\
 \\
-& = ~ 1.190052
+& = ~ 1.812114
 \end{aligned} \]
 
 \hypertarget{calculating-the-variance-function}{%
@@ -288,15 +306,17 @@ A ~ & = ~ \phi ^ {-1}(AUC) ~ \times ~ 1.414 \\
 function}\label{calculating-the-variance-function}}
 
 To be able to continue with the calculations, we will need to calculate
-variance function (\(VF\)). The variance function (\(VF\)) is calculated
-as follows:
+the variance function (\(VF\)) of the accuracy estimate of the ROC curve
+analysis. This variance function (\(VF\)) can be expressed using the
+\(A\) parameter and \(k\) which we have previously calculated as shown
+below:
 
 \[ \begin{aligned}
 VF ~ & = ~ 0.0099 ~ \times ~ e ^ {-A ~ \times ~ A/2} ~ \times ~ \Bigg [ ~ (5 ~ \times ~ A ^ 2 ~ + ~ 8) ~ + ~ \frac{(A ^ 2 ~ + ~ 8)}{k} ~ \Bigg ] \\
 \\
 where: & \\
 \\
-A ~ & = ~ 1.190052 \\
+A ~ & = ~ 1.812114 \\
 \\
 k ~ & = ~ 4
 \end{aligned}\]
@@ -307,13 +327,13 @@ Using the values calculated for \(A\) and \(k\) previously, we calculate
 \[ \begin{aligned}
 VF ~ & = ~ 0.0099 ~ \times ~ e ^ {-A ~ \times ~ A/2} ~ \times ~ \Bigg [ ~ (5 ~ \times ~ A ^ 2 ~ + ~ 8) ~ + ~ \frac{(A ^ 2 ~ + ~ 8)}{k} ~ \Bigg ] \\
 \\
-& = ~ 0.0099 ~ \times ~ 0.4925731 ~ \times ~ \Bigg [ ~ (5 ~ \times ~ 1.416225 ~ + ~ 8) ~ + ~ \frac{(1.416225 ~ + ~ 8)}{4} ~ \Bigg ] \\
+& = ~ 0.0099 ~ \times ~ 0.193616 ~ \times ~ \Bigg [ ~ (5 ~ \times ~ 3.283757 ~ + ~ 8) ~ + ~ \frac{(3.283757 ~ + ~ 8)}{4} ~ \Bigg ] \\
 \\
-& = ~ 0.004876474 ~ \times ~ [ ~ 15.08112 ~ + ~ 2.354056 ~] \\
+& = ~ 0.001916798 ~ \times ~ [ ~ 24.41878 ~ + ~ 2.820939 ~] \\
 \\
-& = ~ 0.004876474 ~ \times 17.43518 \\
+& = ~ 0.001916798 ~ \times 27.23972 \\
 \\
-& = ~ 0.0850222
+& = ~ 0.05221305
 \end{aligned} \]
 
 \hypertarget{calculating-number-of-cases-needed-in-the-study-sample}{%
@@ -334,7 +354,7 @@ Z_{\frac{\alpha}{2}} ~ & = ~ 1.96 ~ \text{for a 95\% CI} \\
 \\
 L ~ & = 0.05 ~ \text{(desired half-width of the CI)} \\
 \\
-VF ~ & = ~ 0.0850222  \\
+VF ~ & = ~ 0.05221305  \\
 \end{aligned} \]
 
 Using the value for \(VF\) calculated previously, we calculate \(N\) as
@@ -343,9 +363,9 @@ follows:
 \[ \begin{aligned}
 N ~ & = ~ \frac{Z_{\alpha/2} ^ 2 ~ \times ~ VF}{L ^ 2} \\
 \\
-& = ~ \frac{1.96 ^ 2 ~ \times ~ 0.0850222}{0.05^ 2} \\
+& = ~ \frac{1.96 ^ 2 ~ \times ~ 0.05221305}{0.05^ 2} \\
 \\
-& = ~ 130.6485 ~ \approx ~ 131
+& = ~ 80.23268 ~ \approx ~ 81
 \end{aligned} \]
 
 \hypertarget{total-sample-size}{%
@@ -359,7 +379,7 @@ n ~ & = ~ N ~ \times ~ (1 ~ + ~ k)\\
 \\
 where: & \\
 \\
-N ~ & = ~ 131 \\
+N ~ & = ~ 81 \\
 \\
 k ~ & = ~ 4
 \end{aligned} \]
@@ -370,15 +390,18 @@ as follows:
 \[ \begin{aligned}
 n ~ & = ~ N ~ \times ~ (1 ~ + ~ k)\\
 \\
-& = ~ 131 ~ \times ~ 5 \\
+& = ~ 81 ~ \times ~ 5 \\
 \\
-& = ~ 655
+& = ~ 405
 \end{aligned} \]
 
-We will need a sample size of about \textbf{655} children about
-\textbf{131} of which will be children who are practising appropriate
+We will need a sample size of about \textbf{405} children about
+\textbf{81} of which will be children who are practising appropriate
 infant and young child feeding.
 
+\newpage
+
+\renewcommand\refname{References}
 \bibliography{bibliography.bib}
 
 
